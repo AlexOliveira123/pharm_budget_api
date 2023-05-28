@@ -1,8 +1,9 @@
 import 'package:get_it/get_it.dart';
-import 'package:pharm_budget_api/modules/user/controller/auth_controller.dart';
 
 import '../../application/routers/i_router.dart';
 import 'package:shelf_router/src/router.dart';
+
+import 'controller/auth_controller.dart';
 
 class UserRouter implements IRouter {
   @override

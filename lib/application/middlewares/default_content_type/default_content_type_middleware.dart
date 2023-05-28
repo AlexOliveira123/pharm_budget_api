@@ -2,7 +2,7 @@ import '../middleware.dart';
 import 'package:shelf/src/response.dart';
 import 'package:shelf/src/request.dart';
 
-class DefaultContentTypeMiddlaware extends Middleware {
+class DefaultContentTypeMiddleware extends Middleware {
   @override
   Future<Response> execute(Request request) async {
     final response = await innerHandler(request);
