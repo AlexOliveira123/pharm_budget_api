@@ -26,7 +26,7 @@ class AuthController {
   })  : _userService = userService,
         _logger = logger;
 
-  @Route.post('/')
+  @Route('POST', '/')
   Future<Response> login(Request request) async {
     try {
       final loginViewModel = LoginViewModel(await request.readAsString());
@@ -40,7 +40,7 @@ class AuthController {
     }
   }
 
-  @Route.post('/register')
+  @Route('POST', '/register')
   Future<Response> saveUser(Request request) async {
     try {
       final userModel = UserSaveInputViewModel(await request.readAsString());
