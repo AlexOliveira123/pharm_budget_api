@@ -13,8 +13,8 @@ class SecurityMiddleware extends Middleware {
   final ILogger _logger;
 
   final securitySkipUrl = <SecuritySkipUrl>[
-    SecuritySkipUrl(url: '/auth/register'),
-    SecuritySkipUrl(url: '/auth/'),
+    SecuritySkipUrl(url: '/auth/register', method: 'POST'),
+    SecuritySkipUrl(url: '/auth/', method: 'POST'),
   ];
 
   SecurityMiddleware(this._logger);
@@ -22,7 +22,7 @@ class SecurityMiddleware extends Middleware {
   @override
   Future<Response> execute(Request request) async {
     try {
-      if (securitySkipUrl.contains(SecuritySkipUrl(url: '/${request.url.path}'))) {
+      if (securitySkipUrl.contains(SecuritySkipUrl(url: '/${request.url.path}', method: request.method))) {
         return innerHandler(request);
       }
       final authHeader = request.headers['Authorization'];
@@ -50,15 +50,10 @@ class SecurityMiddleware extends Middleware {
       return innerHandler(request.change(headers: securityHeaders));
     } on JwtException catch (e, s) {
       _logger.error('Error on validate token JWT', e, s);
-      return Response.forbidden(jsonEncode({
-        'message': 'Acesso negado! /${request.url.path} ${request.method}',
-        'error': e.message,
-        'stackTrace': s.toString()
-      }));
+      return Response.forbidden(jsonEncode({'message': 'Acesso negado!'}));
     } catch (e, s) {
       _logger.error('Internal server error', e, s);
-      return Response.forbidden(
-          jsonEncode({'message': 'Acesso negado!', 'error': e.toString(), 'stackTrace': s.toString()}));
+      return Response.forbidden(jsonEncode({'message': 'Acesso negado!'}));
     }
   }
 }
