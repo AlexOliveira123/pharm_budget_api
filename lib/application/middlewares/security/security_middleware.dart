@@ -50,10 +50,12 @@ class SecurityMiddleware extends Middleware {
       return innerHandler(request.change(headers: securityHeaders));
     } on JwtException catch (e, s) {
       _logger.error('Error on validate token JWT', e, s);
-      return Response.forbidden(jsonEncode({'message': 'Acesso negado!', 'error': e.message, 'stackTrace': s}));
+      return Response.forbidden(
+          jsonEncode({'message': 'Acesso negado!', 'error': e.message, 'stackTrace': s.toString()}));
     } catch (e, s) {
       _logger.error('Internal server error', e, s);
-      return Response.forbidden(jsonEncode({'message': 'Acesso negado!', 'error': e.toString(), 'stackTrace': s}));
+      return Response.forbidden(
+          jsonEncode({'message': 'Acesso negado!', 'error': e.toString(), 'stackTrace': s.toString()}));
     }
   }
 }
