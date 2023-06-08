@@ -13,8 +13,8 @@ class SecurityMiddleware extends Middleware {
   final ILogger _logger;
 
   final securitySkipUrl = <SecuritySkipUrl>[
-    SecuritySkipUrl(url: '/auth/register', method: 'POST'),
-    SecuritySkipUrl(url: '/auth/', method: 'POST'),
+    SecuritySkipUrl(url: '/auth/register'),
+    SecuritySkipUrl(url: '/auth/'),
   ];
 
   SecurityMiddleware(this._logger);
@@ -22,7 +22,7 @@ class SecurityMiddleware extends Middleware {
   @override
   Future<Response> execute(Request request) async {
     try {
-      if (securitySkipUrl.contains(SecuritySkipUrl(url: '/${request.url.path}', method: request.method))) {
+      if (securitySkipUrl.contains(SecuritySkipUrl(url: '/${request.url.path}'))) {
         return innerHandler(request);
       }
       final authHeader = request.headers['Authorization'];
